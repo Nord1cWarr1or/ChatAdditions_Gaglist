@@ -138,7 +138,7 @@ Example: `flags = 5` → text chat (1) and voice chat (4) are disabled.
 
 ## License
 
-MIT
+[GPL-3.0](LICENSE.txt)
 
 ---
 

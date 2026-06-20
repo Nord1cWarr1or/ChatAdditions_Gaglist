@@ -138,7 +138,7 @@ sudo systemctl reload nginx
 
 ## Лицензия
 
-MIT
+[GPL-3.0](LICENSE.txt)
 
 ---
 
