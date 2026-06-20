@@ -1,0 +1,696 @@
+:root {
+    --bg: #f5f7fa;
+    --bg-card: #fff;
+    --bg-card-hover: #fafbff;
+    --bg-header-row: #fafafa;
+    --text: #333;
+    --text-muted: #888;
+    --text-secondary: #666;
+    --text-heading: #1a1a2e;
+    --accent: #6c5ce7;
+    --accent-hover: #5a4bd1;
+    --border: #f0f0f0;
+    --border-input: #e0e0e0;
+    --shadow: rgba(0,0,0,0.06);
+    --shadow-header: rgba(0,0,0,0.08);
+    --badge-total-bg: #e8e8e8;
+    --badge-total-text: #555;
+    --badge-active-bg: #d4edda;
+    --badge-active-text: #155724;
+    --badge-expired-bg: #f0f0f0;
+    --badge-expired-text: #888;
+    --status-active-bg: #d4edda;
+    --status-active-text: #155724;
+    --status-expired-bg: #f0f0f0;
+    --status-expired-text: #888;
+    --status-permanent-bg: #fff3cd;
+    --status-permanent-text: #856404;
+    --btn-edit-bg: #e8f4fd;
+    --btn-edit-text: #0c6cbb;
+    --btn-delete-bg: #ffe8e8;
+    --btn-delete-text: #d32f2f;
+    --btn-login-bg: #6c5ce7;
+    --btn-login-text: #fff;
+    --btn-logout-bg: #ff6b6b;
+    --btn-logout-text: #fff;
+    --steam-id-bg: #f0edff;
+    --steam-id-text: #6c5ce7;
+    --pagination-bg: #fff;
+    --pagination-border: #e0e0e0;
+    --pagination-hover-bg: #6c5ce7;
+    --pagination-hover-text: #fff;
+    --form-bg: #fff;
+    --btn-cancel-bg: #f0f0f0;
+    --btn-cancel-text: #666;
+    --btn-submit-bg: #6c5ce7;
+    --btn-submit-text: #fff;
+    --error-bg: #ffe8e8;
+    --error-text: #d32f2f;
+    --success-bg: #d4edda;
+    --success-text: #155724;
+}
+
+body.dark {
+    --bg: #0f0f1a;
+    --bg-card: #1a1a2e;
+    --bg-card-hover: #222240;
+    --bg-header-row: #16162b;
+    --text: #e0e0e0;
+    --text-muted: #888;
+    --text-secondary: #aaa;
+    --text-heading: #eaeaea;
+    --border: #2a2a45;
+    --border-input: #3a3a55;
+    --shadow: rgba(0,0,0,0.3);
+    --shadow-header: rgba(0,0,0,0.4);
+    --badge-total-bg: #2a2a45;
+    --badge-total-text: #bbb;
+    --badge-active-bg: #1a3a2a;
+    --badge-active-text: #5ddf8e;
+    --badge-expired-bg: #2a2a45;
+    --badge-expired-text: #888;
+    --status-active-bg: #1a3a2a;
+    --status-active-text: #5ddf8e;
+    --status-expired-bg: #2a2a45;
+    --status-expired-text: #888;
+    --status-permanent-bg: #3a3520;
+    --status-permanent-text: #e0c860;
+    --btn-edit-bg: #1a2a3a;
+    --btn-edit-text: #5ba8d4;
+    --btn-delete-bg: #3a1a1a;
+    --btn-delete-text: #ef6b6b;
+    --btn-login-bg: #6c5ce7;
+    --btn-login-text: #fff;
+    --btn-logout-bg: #c0392b;
+    --btn-logout-text: #fff;
+    --steam-id-bg: #222245;
+    --steam-id-text: #a29bfe;
+    --pagination-bg: #1a1a2e;
+    --pagination-border: #3a3a55;
+    --pagination-hover-bg: #6c5ce7;
+    --pagination-hover-text: #fff;
+    --form-bg: #1a1a2e;
+    --btn-cancel-bg: #2a2a45;
+    --btn-cancel-text: #bbb;
+    --btn-submit-bg: #6c5ce7;
+    --btn-submit-text: #fff;
+    --error-bg: #3a1a1a;
+    --error-text: #ef6b6b;
+    --success-bg: #1a3a2a;
+    --success-text: #5ddf8e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background: var(--bg-card);
+    box-shadow: 0 2px 10px var(--shadow-header);
+    padding: 16px 24px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-heading);
+}
+
+header h1 span {
+    color: var(--accent);
+}
+
+.nav-links {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.nav-links a, .nav-links button {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.nav-links a:hover, .nav-links button:hover {
+    background: var(--badge-total-bg);
+    color: var(--text);
+}
+
+.nav-links .btn-login {
+    background: var(--btn-login-bg);
+    color: var(--btn-login-text);
+}
+
+.nav-links .btn-login:hover {
+    background: var(--accent-hover);
+}
+
+.nav-links .btn-logout {
+    background: var(--btn-logout-bg);
+    color: var(--btn-logout-text);
+}
+
+.nav-links .btn-logout:hover {
+    opacity: 0.85;
+}
+
+.theme-toggle {
+    background: var(--badge-total-bg);
+    color: var(--text);
+    font-size: 18px;
+    padding: 8px 12px;
+    line-height: 1;
+}
+
+.theme-toggle:hover {
+    background: var(--border-input);
+}
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter-btn {
+    padding: 10px 18px;
+    border: 2px solid var(--border-input);
+    border-radius: 10px;
+    font-size: 14px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.filter-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.search-box {
+    flex: 1;
+    min-width: 250px;
+    padding: 10px 16px;
+    border: 2px solid var(--border-input);
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: var(--bg-card);
+    color: var(--text);
+}
+
+.search-box:focus {
+    border-color: var(--accent);
+}
+
+.stats {
+    display: flex;
+    gap: 12px;
+}
+
+.stat-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.stat-total {
+    background: var(--badge-total-bg);
+    color: var(--badge-total-text);
+}
+
+.stat-active {
+    background: var(--badge-active-bg);
+    color: var(--badge-active-text);
+}
+
+.stat-expired {
+    background: var(--badge-expired-bg);
+    color: var(--badge-expired-text);
+}
+
+.table-wrapper {
+    background: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px var(--shadow);
+    overflow-x: auto;
+    transition: background 0.3s;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+thead th {
+    background: var(--bg-header-row);
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+thead th:last-child {
+    position: sticky;
+    right: 0;
+    z-index: 3;
+    background: var(--bg-header-row);
+}
+
+tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+tbody tr {
+    transition: background 0.15s;
+}
+
+tbody tr:hover {
+    background: var(--bg-card-hover);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.player-name {
+    font-weight: 600;
+    color: var(--text-heading);
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.steam-id {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 12px;
+    color: var(--steam-id-text);
+    background: var(--steam-id-bg);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.ip-address {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.reason-text {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-name {
+    color: var(--text-secondary);
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.date-cell {
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.date-duration {
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--steam-id-bg);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.date-range {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.status-active {
+    background: var(--status-active-bg);
+    color: var(--status-active-text);
+}
+
+.status-expired {
+    background: var(--status-expired-bg);
+    color: var(--status-expired-text);
+}
+
+.status-permanent {
+    background: var(--status-permanent-bg);
+    color: var(--status-permanent-text);
+}
+
+.actions {
+    display: flex;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.actions td {
+    position: sticky;
+    right: 0;
+    background: var(--bg-card);
+    z-index: 1;
+}
+
+.actions td:hover {
+    background: var(--bg-card-hover);
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-edit {
+    background: var(--btn-edit-bg);
+    color: var(--btn-edit-text);
+}
+
+.btn-edit:hover {
+    opacity: 0.8;
+}
+
+.btn-delete {
+    background: var(--btn-delete-bg);
+    color: var(--btn-delete-text);
+}
+
+.btn-delete:hover {
+    opacity: 0.8;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+}
+
+.pagination a, .pagination span {
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.pagination a {
+    background: var(--pagination-bg);
+    color: var(--text-secondary);
+    border: 1px solid var(--pagination-border);
+}
+
+.pagination a:hover {
+    background: var(--pagination-hover-bg);
+    color: var(--pagination-hover-text);
+    border-color: var(--pagination-hover-bg);
+}
+
+.pagination .current {
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.empty-state p {
+    font-size: 16px;
+    margin-top: 8px;
+}
+
+/* Login page */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.login-box {
+    background: var(--form-bg);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px var(--shadow-header);
+    width: 100%;
+    max-width: 400px;
+    transition: background 0.3s;
+}
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--text-heading);
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--border-input);
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: var(--bg-card);
+    color: var(--text);
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: var(--accent);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: var(--btn-submit-bg);
+    color: var(--btn-submit-text);
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-submit:hover {
+    background: var(--accent-hover);
+}
+
+.error-msg {
+    background: var(--error-bg);
+    color: var(--error-text);
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* Edit form */
+.edit-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.edit-box {
+    background: var(--form-bg);
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px var(--shadow-header);
+    transition: background 0.3s;
+}
+
+.edit-box h2 {
+    margin-bottom: 24px;
+    color: var(--text-heading);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--border-input);
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    background: var(--bg-card);
+    color: var(--text);
+}
+
+.form-group textarea:focus {
+    border-color: var(--accent);
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-cancel {
+    padding: 10px 20px;
+    background: var(--btn-cancel-bg);
+    color: var(--btn-cancel-text);
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-cancel:hover {
+    opacity: 0.8;
+}
+
+.btn-save {
+    padding: 10px 24px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background: var(--accent-hover);
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .toolbar {
+        flex-direction: column;
+    }
+
+    .stats {
+        width: 100%;
+        justify-content: center;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    table {
+        font-size: 13px;
+        min-width: 700px;
+    }
+
+    thead th, tbody td {
+        padding: 10px 8px;
+    }
+}
