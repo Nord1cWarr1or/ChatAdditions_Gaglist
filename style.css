@@ -723,7 +723,6 @@ tbody tr:last-child td {
     }
 
     .col-ip,
-    .col-admin,
     .col-reason {
         display: none;
     }
