@@ -97,18 +97,18 @@ $now = date('Y-m-d H:i:s');
                 return $params ? '?' . http_build_query($params) : 'index.php';
             };
             ?>
-            <form method="get" action="index.php" style="flex:1; min-width:250px; display:flex; gap:8px; align-items:center;">
+            <form method="get" action="index.php" class="search-form" style="flex:1; min-width:250px; display:flex; gap:8px; align-items:center;">
                 <input type="text" name="q" class="search-box" placeholder="Поиск по нику, Steam ID или IP..." value="<?= htmlspecialchars($search) ?>">
                 <?php if ($active_only): ?>
                     <input type="hidden" name="active" value="1">
                 <?php endif; ?>
                 <button type="submit" class="filter-btn">🔍 Найти</button>
                 <?php if ($search !== ''): ?>
-                    <a href="<?= $build_url(['q' => '']) ?>" class="filter-btn">✕ Сброс</a>
+                    <a href="<?= $build_url(['q' => '']) ?>" class="filter-btn">✕</a>
                 <?php endif; ?>
             </form>
             <a href="<?= $build_url(['active' => 0]) ?>" class="filter-btn <?= !$active_only ? 'active' : '' ?>">Все</a>
-            <a href="<?= $build_url(['active' => 1]) ?>" class="filter-btn <?= $active_only ? 'active' : '' ?>">Только активные</a>
+            <a href="<?= $build_url(['active' => 1]) ?>" class="filter-btn <?= $active_only ? 'active' : '' ?>">Активные</a>
             <div class="stats">
                 <span class="stat-badge stat-total">Всего: <?= $total ?></span>
                 <span class="stat-badge stat-active">Активных: <?= $count_active ?></span>
@@ -129,10 +129,10 @@ $now = date('Y-m-d H:i:s');
                             <th>Игрок</th>
                             <th>Steam ID</th>
                             <?php if (is_auth()): ?>
-                                <th>IP</th>
+                                <th class="col-ip">IP</th>
                             <?php endif; ?>
-                            <th>Причина</th>
-                            <th>Админ</th>
+                            <th class="col-reason">Причина</th>
+                            <th class="col-admin">Админ</th>
                             <th>Срок</th>
                             <th>Статус</th>
                             <?php if (is_auth()): ?>
@@ -150,10 +150,10 @@ $now = date('Y-m-d H:i:s');
                             <td class="player-name" title="<?= htmlspecialchars(fix_encoding($gag['name'])) ?>"><?= htmlspecialchars(fix_encoding($gag['name'])) ?></td>
                             <td><span class="steam-id"><?= htmlspecialchars($gag['authid']) ?></span></td>
                             <?php if (is_auth()): ?>
-                                <td class="ip-address"><?= htmlspecialchars($gag['ip']) ?></td>
+                                <td class="ip-address col-ip"><?= htmlspecialchars($gag['ip']) ?></td>
                             <?php endif; ?>
-                            <td class="reason-text" title="<?= htmlspecialchars(fix_encoding($gag['reason'])) ?>"><?= htmlspecialchars(fix_encoding($gag['reason'])) ?></td>
-                            <td class="admin-name" title="<?= htmlspecialchars(fix_encoding($gag['admin_name'])) ?>"><?= htmlspecialchars(fix_encoding($gag['admin_name'])) ?></td>
+                            <td class="reason-text col-reason" title="<?= htmlspecialchars(fix_encoding($gag['reason'])) ?>"><?= htmlspecialchars(fix_encoding($gag['reason'])) ?></td>
+                            <td class="admin-name col-admin" title="<?= htmlspecialchars(fix_encoding($gag['admin_name'])) ?>"><?= htmlspecialchars(fix_encoding($gag['admin_name'])) ?></td>
                             <td class="date-cell">
                                 <?php if ($is_permanent): ?>
                                     ∞ <span class="date-range">(<?= date('d.m.Y H:i', strtotime($gag['created_at'])) ?> — ∞)</span>
