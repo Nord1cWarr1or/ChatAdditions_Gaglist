@@ -44,6 +44,7 @@ define('DB_NAME', 'db_name');     // database name from the plugin (default: pla
 
 define('ADMIN_LOGIN', 'admin');   // panel login
 define('ADMIN_PASSWORD', 'changeme'); // panel password
+define('GAGS_TABLE', 'chatadditions_gags'); // table name (do not change unless necessary)
 ```
 
 ### 3. Configure Nginx
