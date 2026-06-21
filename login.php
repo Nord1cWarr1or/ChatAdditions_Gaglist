@@ -2,17 +2,36 @@
 require_once 'config.php';
 
 $error = '';
+$rate_limit_max = 5;
+$rate_limit_window = 900;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $login = $_POST['login'] ?? '';
-    $password = $_POST['password'] ?? '';
-    
-    if ($login === ADMIN_LOGIN && $password === ADMIN_PASSWORD) {
-        $_SESSION['logged_in'] = true;
-        header('Location: index.php');
-        exit;
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $rate_file = sys_get_temp_dir() . '/login_rate_' . md5($ip);
+    $attempts = [];
+    if (file_exists($rate_file)) {
+        $attempts = json_decode(file_get_contents($rate_file), true) ?: [];
+    }
+    $now = time();
+    $attempts = array_filter($attempts, fn($t) => $t > $now - $rate_limit_window);
+
+    if (count($attempts) >= $rate_limit_max) {
+        $error = 'Слишком много попыток. Попробуйте через 15 минут.';
     } else {
-        $error = 'Неверный логин или пароль';
+        $login = $_POST['login'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        if ($login === ADMIN_LOGIN && $password === ADMIN_PASSWORD) {
+            $_SESSION['logged_in'] = true;
+            session_regenerate_id(true);
+            unlink($rate_file);
+            header('Location: index.php');
+            exit;
+        } else {
+            $attempts[] = $now;
+            file_put_contents($rate_file, json_encode($attempts));
+            $error = 'Неверный логин или пароль';
+        }
     }
 }
 ?>

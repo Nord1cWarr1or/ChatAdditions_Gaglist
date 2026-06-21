@@ -40,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($name === '' || $authid === '' || $reason === '') {
         $error = 'Заполните обязательные поля';
+    } elseif ($expire_at !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2})?$/', $expire_at)) {
+        $error = 'Неверный формат даты';
     } else {
         if ($expire_at === '') {
             $expire_at = '2286-11-20 17:46:39';
