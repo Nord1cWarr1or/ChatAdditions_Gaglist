@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($login === ADMIN_LOGIN && $password === ADMIN_PASSWORD) {
             $_SESSION['logged_in'] = true;
             session_regenerate_id(true);
-            unlink($rate_file);
+            if (file_exists($rate_file)) unlink($rate_file);
             header('Location: index.php');
             exit;
         } else {
