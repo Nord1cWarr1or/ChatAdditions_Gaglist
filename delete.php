@@ -7,7 +7,7 @@ $conn = db_connect();
 $id = intval($_POST['id'] ?? 0);
 
 if ($id > 0) {
-    $stmt = $conn->prepare("DELETE FROM chatadditions_gags WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM " . GAGS_TABLE . " WHERE id = ?");
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $stmt->close();

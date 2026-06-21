@@ -31,7 +31,7 @@ if ($where_parts) {
     $where = 'WHERE ' . implode(' AND ', $where_parts);
 }
 
-$count_sql = "SELECT COUNT(*) as cnt FROM chatadditions_gags $where";
+$count_sql = "SELECT COUNT(*) as cnt FROM " . GAGS_TABLE . " $where";
 $stmt = $conn->prepare($count_sql);
 if ($params) {
     $stmt->bind_param($types, ...$params);
@@ -40,13 +40,13 @@ $stmt->execute();
 $total_filtered = $stmt->get_result()->fetch_assoc()['cnt'];
 $stmt->close();
 
-$total = $conn->query("SELECT COUNT(*) as cnt FROM chatadditions_gags")->fetch_assoc()['cnt'];
+$total = $conn->query("SELECT COUNT(*) as cnt FROM " . GAGS_TABLE)->fetch_assoc()['cnt'];
 $total_pages = max(1, ceil($total_filtered / $per_page));
 $page = min($page, $total_pages);
 $offset = ($page - 1) * $per_page;
 
 $sql = "SELECT id, name, authid, ip, reason, admin_name, admin_authid, created_at, expire_at, flags 
-        FROM chatadditions_gags $where 
+        FROM " . GAGS_TABLE . " $where 
         ORDER BY created_at DESC 
         LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
@@ -58,8 +58,8 @@ $result = $stmt->get_result();
 $gags = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-$count_active = $conn->query("SELECT COUNT(*) as cnt FROM chatadditions_gags WHERE expire_at > NOW() OR expire_at = '2286-11-20 17:46:39'")->fetch_assoc()['cnt'];
-$count_expired = $conn->query("SELECT COUNT(*) as cnt FROM chatadditions_gags WHERE expire_at <= NOW() AND expire_at != '2286-11-20 17:46:39'")->fetch_assoc()['cnt'];
+$count_active = $conn->query("SELECT COUNT(*) as cnt FROM " . GAGS_TABLE . " WHERE expire_at > NOW() OR expire_at = '2286-11-20 17:46:39'")->fetch_assoc()['cnt'];
+$count_expired = $conn->query("SELECT COUNT(*) as cnt FROM " . GAGS_TABLE . " WHERE expire_at <= NOW() AND expire_at != '2286-11-20 17:46:39'")->fetch_assoc()['cnt'];
 
 $now = date('Y-m-d H:i:s');
 ?>
