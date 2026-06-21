@@ -15,8 +15,9 @@ $types = '';
 
 if ($search !== '') {
     $where_parts[] = "(name LIKE ? OR name LIKE ? OR authid LIKE ? OR ip LIKE ?)";
-    $like = '%' . $search . '%';
-    $like_double = '%' . double_encode($search) . '%';
+    $search_escaped = str_replace(['%', '_'], ['\\%', '\\_'], $search);
+    $like = '%' . $search_escaped . '%';
+    $like_double = '%' . double_encode($search_escaped) . '%';
     $params = array_merge($params, [$like, $like_double, $like, $like]);
     $types .= 'ssss';
 }

@@ -9,6 +9,7 @@ define('ADMIN_PASSWORD', 'changeme');
 
 header('Content-Type: text/html; charset=utf-8');
 session_start();
+date_default_timezone_set('Europe/Moscow');
 
 function db_connect() {
     static $conn = null;
