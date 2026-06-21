@@ -19,27 +19,27 @@
 
 ## Скриншоты
 
-![Светлая тема — рабочий стол](screenshots/desktop-light.png)
+<img src="screenshots/desktop-light.png" width="60%">
 
 <details>
 <summary>Тёмная тема — рабочий стол</summary>
 
-![Тёмная тема — рабочий стол](screenshots/desktop-dark.png)
+<img src="screenshots/desktop-dark.png" width="60%">
 
 </details>
 
 <details>
 <summary>Форма редактирования</summary>
 
-![Форма редактирования](screenshots/desktop-edit.png)
+<img src="screenshots/desktop-edit.png" width="60%">
 
 </details>
 
 <details>
 <summary>Мобильная версия</summary>
 
-![Мобильная версия — список](screenshots/mobile-list.png)
-![Мобильная версия — действия](screenshots/mobile-actions.png)
+<img src="screenshots/mobile-list.png" width="60%">
+<img src="screenshots/mobile-actions.png" width="60%">
 
 </details>
 
