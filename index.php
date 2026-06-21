@@ -127,7 +127,7 @@ $now = date('Y-m-d H:i:s');
                         <tr>
                             <th>#</th>
                             <th>Игрок</th>
-                            <th>Steam ID</th>
+                            <th class="col-steamid">Steam ID</th>
                             <?php if (is_auth()): ?>
                                 <th class="col-ip">IP</th>
                             <?php endif; ?>
@@ -148,7 +148,7 @@ $now = date('Y-m-d H:i:s');
                         <tr>
                             <td><?= $offset + $i + 1 ?></td>
                             <td class="player-name" title="<?= htmlspecialchars(fix_encoding($gag['name'])) ?>"><?= htmlspecialchars(fix_encoding($gag['name'])) ?></td>
-                            <td><span class="steam-id"><?= htmlspecialchars($gag['authid']) ?></span></td>
+                            <td class="col-steamid"><span class="steam-id"><?= htmlspecialchars($gag['authid']) ?></span></td>
                             <?php if (is_auth()): ?>
                                 <td class="ip-address col-ip"><?= htmlspecialchars($gag['ip']) ?></td>
                             <?php endif; ?>

@@ -17,8 +17,8 @@
     --badge-total-text: #555;
     --badge-active-bg: #d4edda;
     --badge-active-text: #155724;
-    --badge-expired-bg: #f0f0f0;
-    --badge-expired-text: #888;
+    --badge-expired-bg: #e8e8e8;
+    --badge-expired-text: #555;
     --status-active-bg: #d4edda;
     --status-active-text: #155724;
     --status-expired-bg: #f0f0f0;
@@ -68,7 +68,7 @@ body.dark {
     --badge-active-bg: #1a3a2a;
     --badge-active-text: #5ddf8e;
     --badge-expired-bg: #2a2a45;
-    --badge-expired-text: #888;
+    --badge-expired-text: #bbb;
     --status-active-bg: #1a3a2a;
     --status-active-text: #5ddf8e;
     --status-expired-bg: #2a2a45;
@@ -372,6 +372,9 @@ tbody tr:last-child td {
     font-size: 13px;
     color: var(--text-muted);
     white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .date-duration {
@@ -382,12 +385,12 @@ tbody tr:last-child td {
     border-radius: 4px;
     font-size: 13px;
     white-space: nowrap;
+    width: fit-content;
 }
 
 .date-range {
     color: var(--text-muted);
-    font-size: 12px;
-    margin-left: 4px;
+    font-size: 11px;
 }
 
 .status-badge {
@@ -716,14 +719,17 @@ tbody tr:last-child td {
     }
 
     .stat-badge {
-        font-size: 12px;
+        font-size: 11px;
         padding: 6px 8px;
         flex: 1;
-        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        white-space: nowrap;
     }
 
     .col-ip,
-    .col-reason {
+    .col-steamid {
         display: none;
     }
 
@@ -734,6 +740,14 @@ tbody tr:last-child td {
     thead th,
     tbody td {
         padding: 10px 8px;
+    }
+
+    thead th:last-child {
+        position: static;
+    }
+
+    .actions td {
+        position: static;
     }
 
     .player-name {
