@@ -17,6 +17,32 @@ Web panel for viewing and managing **gag** (chat mute) punishments from the [Cha
 - Responsive design for mobile devices
 - CSRF protection on forms
 
+## Screenshots
+
+![Light theme — desktop](screenshots/desktop-light.png)
+
+<details>
+<summary>Dark theme — desktop</summary>
+
+![Dark theme — desktop](screenshots/desktop-dark.png)
+
+</details>
+
+<details>
+<summary>Edit form</summary>
+
+![Edit form](screenshots/desktop-edit.png)
+
+</details>
+
+<details>
+<summary>Mobile view</summary>
+
+![Mobile view — list](screenshots/mobile-list.png)
+![Mobile view — actions](screenshots/mobile-actions.png)
+
+</details>
+
 ## Requirements
 
 - PHP 7.4+ with `mysqli` and `mbstring` extensions
