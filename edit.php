@@ -10,7 +10,7 @@ if ($id <= 0) {
     exit;
 }
 
-$stmt = $conn->prepare("SELECT * FROM chatadditions_gags WHERE id = ?");
+$stmt = $conn->prepare("SELECT * FROM " . GAGS_TABLE . " WHERE id = ?");
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $gag = $stmt->get_result()->fetch_assoc();
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $reason_db = double_encode($reason);
         $admin_name_db = double_encode($admin_name);
         
-        $stmt = $conn->prepare("UPDATE chatadditions_gags SET 
+        $stmt = $conn->prepare("UPDATE " . GAGS_TABLE . " SET 
             name = ?, authid = ?, ip = ?, reason = ?, 
             admin_name = ?, admin_authid = ?, expire_at = ?, flags = ? 
             WHERE id = ?");

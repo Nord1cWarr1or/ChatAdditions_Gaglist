@@ -6,6 +6,7 @@ define('DB_NAME', 'db_name');
 
 define('ADMIN_LOGIN', 'admin');
 define('ADMIN_PASSWORD', 'changeme');
+define('GAGS_TABLE', 'chatadditions_gags'); // Не менять без необходимости — именно такое имя используется по умолчанию в плагине
 
 header('Content-Type: text/html; charset=utf-8');
 session_start();
