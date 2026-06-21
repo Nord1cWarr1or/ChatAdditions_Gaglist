@@ -37,10 +37,11 @@ if ($params) {
     $stmt->bind_param($types, ...$params);
 }
 $stmt->execute();
-$total = $stmt->get_result()->fetch_assoc()['cnt'];
+$total_filtered = $stmt->get_result()->fetch_assoc()['cnt'];
 $stmt->close();
 
-$total_pages = max(1, ceil($total / $per_page));
+$total = $conn->query("SELECT COUNT(*) as cnt FROM chatadditions_gags")->fetch_assoc()['cnt'];
+$total_pages = max(1, ceil($total_filtered / $per_page));
 $page = min($page, $total_pages);
 $offset = ($page - 1) * $per_page;
 
