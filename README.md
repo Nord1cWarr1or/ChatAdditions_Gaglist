@@ -17,6 +17,32 @@
 - Адаптивный дизайн для мобильных устройств
 - CSRF-защита на формах
 
+## Скриншоты
+
+![Светлая тема — рабочий стол](screenshots/desktop-light.png)
+
+<details>
+<summary>Тёмная тема — рабочий стол</summary>
+
+![Тёмная тема — рабочий стол](screenshots/desktop-dark.png)
+
+</details>
+
+<details>
+<summary>Форма редактирования</summary>
+
+![Форма редактирования](screenshots/desktop-edit.png)
+
+</details>
+
+<details>
+<summary>Мобильная версия</summary>
+
+![Мобильная версия — список](screenshots/mobile-list.png)
+![Мобильная версия — действия](screenshots/mobile-actions.png)
+
+</details>
+
 ## Требования
 
 - PHP 7.4+ с модулями `mysqli` и `mbstring`
