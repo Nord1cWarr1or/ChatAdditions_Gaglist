@@ -19,27 +19,27 @@ Web panel for viewing and managing **gag** (chat mute) punishments from the [Cha
 
 ## Screenshots
 
-![Light theme — desktop](screenshots/desktop-light.png)
+<img src="screenshots/desktop-light.png" width="60%">
 
 <details>
 <summary>Dark theme — desktop</summary>
 
-![Dark theme — desktop](screenshots/desktop-dark.png)
+<img src="screenshots/desktop-dark.png" width="60%">
 
 </details>
 
 <details>
 <summary>Edit form</summary>
 
-![Edit form](screenshots/desktop-edit.png)
+<img src="screenshots/desktop-edit.png" width="60%">
 
 </details>
 
 <details>
 <summary>Mobile view</summary>
 
-![Mobile view — list](screenshots/mobile-list.png)
-![Mobile view — actions](screenshots/mobile-actions.png)
+<img src="screenshots/mobile-list.png" width="60%">
+<img src="screenshots/mobile-actions.png" width="60%">
 
 </details>
 
