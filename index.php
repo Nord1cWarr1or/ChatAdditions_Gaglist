@@ -78,6 +78,7 @@ $now = date('Y-m-d H:i:s');
             <div class="nav-links">
                 <button class="theme-toggle" onclick="toggleTheme()" title="Переключить тему">☀️</button>
                 <?php if (is_auth()): ?>
+                    <a href="create.php" class="btn-add">+ Добавить gag</a>
                     <a href="logout.php" class="btn-logout">Выйти</a>
                 <?php else: ?>
                     <a href="login.php" class="btn-login">Войти</a>

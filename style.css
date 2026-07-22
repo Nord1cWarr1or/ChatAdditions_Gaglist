@@ -183,6 +183,15 @@ header h1 span {
     opacity: 0.85;
 }
 
+.nav-links .btn-add {
+    background: var(--btn-submit-bg);
+    color: var(--btn-submit-text);
+}
+
+.nav-links .btn-add:hover {
+    background: var(--accent-hover);
+}
+
 .theme-toggle {
     background: var(--badge-total-bg);
     color: var(--text);
