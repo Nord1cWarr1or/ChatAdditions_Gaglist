@@ -3,23 +3,6 @@ require_once 'config.php';
 require_auth();
 
 $conn = db_connect();
-$id = intval($_GET['id'] ?? 0);
-
-if ($id <= 0) {
-    header('Location: index.php');
-    exit;
-}
-
-$stmt = $conn->prepare("SELECT * FROM " . GAGS_TABLE . " WHERE id = ?");
-$stmt->bind_param('i', $id);
-$stmt->execute();
-$gag = $stmt->get_result()->fetch_assoc();
-$stmt->close();
-
-if (!$gag) {
-    header('Location: index.php');
-    exit;
-}
 
 $success = '';
 $error = '';
@@ -37,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['flag_a'])) $flags |= 1;
     if (!empty($_POST['flag_b'])) $flags |= 2;
     if (!empty($_POST['flag_c'])) $flags |= 4;
-    
+
     if ($name === '' || $authid === '' || $reason === '') {
         $error = 'Заполните обязательные поля';
     } elseif ($expire_at !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2})?$/', $expire_at)) {
@@ -50,30 +33,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name_db = double_encode($name);
         $reason_db = double_encode($reason);
         $admin_name_db = double_encode($admin_name);
-        
-        $stmt = $conn->prepare("UPDATE " . GAGS_TABLE . " SET 
-            name = ?, authid = ?, ip = ?, reason = ?, 
-            admin_name = ?, admin_authid = ?, expire_at = ?, flags = ? 
-            WHERE id = ?");
-        $stmt->bind_param('sssssssii', $name_db, $authid, $ip, $reason_db, $admin_name_db, $admin_authid, $expire_at, $flags, $id);
+
+        $stmt = $conn->prepare("INSERT INTO " . GAGS_TABLE . " 
+            (name, authid, ip, reason, admin_name, admin_authid, admin_ip, expire_at, flags, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, '0.0.0.0', ?, ?, NOW())
+            ON DUPLICATE KEY UPDATE 
+            name = VALUES(name), ip = VALUES(ip), reason = VALUES(reason),
+            admin_name = VALUES(admin_name), admin_authid = VALUES(admin_authid),
+            admin_ip = VALUES(admin_ip), expire_at = VALUES(expire_at),
+            flags = VALUES(flags), created_at = NOW()");
+        $stmt->bind_param('sssssssi', $name_db, $authid, $ip, $reason_db, $admin_name_db, $admin_authid, $expire_at, $flags);
 
         try {
             $stmt->execute();
-            $success = 'Gag успешно обновлён';
-            $gag['name'] = $name_db;
-            $gag['authid'] = $authid;
-            $gag['ip'] = $ip;
-            $gag['reason'] = $reason_db;
-            $gag['admin_name'] = $admin_name_db;
-            $gag['admin_authid'] = $admin_authid;
-            $gag['expire_at'] = $expire_at;
-            $gag['flags'] = $flags;
+            header('Location: index.php');
+            exit;
         } catch (mysqli_sql_exception $e) {
-            if ($e->getCode() === 1062) {
-                $error = 'Gag с таким Steam ID уже существует';
-            } else {
-                $error = 'Ошибка при обновлении: ' . $e->getMessage();
-            }
+            $error = 'Ошибка при создании: ' . $e->getMessage();
         }
         $stmt->close();
     }
@@ -84,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редактирование — Gag List</title>
+    <title>Новый gag — Gag List</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -100,78 +76,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="edit-wrapper">
             <div class="edit-box">
-                <h2>Редактирование gag #<?= $id ?></h2>
-                
-                <?php if ($success): ?>
-                    <div class="error-msg" style="background:#d4edda;color:#155724;"><?= htmlspecialchars($success) ?></div>
-                <?php endif; ?>
-                
+                <h2>Новый gag</h2>
+
                 <?php if ($error): ?>
                     <div class="error-msg"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
-                
+
                 <form method="post">
                     <?= csrf_field() ?>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Никнейм игрока *</label>
-                            <input type="text" name="name" value="<?= htmlspecialchars(fix_encoding($gag['name'])) ?>" required>
+                            <input type="text" name="name" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
                         </div>
                         <div class="form-group">
                             <label>Steam ID *</label>
-                            <input type="text" name="authid" value="<?= htmlspecialchars($gag['authid']) ?>" required>
+                            <input type="text" name="authid" value="<?= htmlspecialchars($_POST['authid'] ?? '') ?>" required>
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label>IP игрока</label>
-                            <input type="text" name="ip" value="<?= htmlspecialchars($gag['ip']) ?>">
+                            <input type="text" name="ip" value="<?= htmlspecialchars($_POST['ip'] ?? '') ?>">
                         </div>
                         <div class="form-group">
                             <label>Флаги</label>
                             <div style="display:flex;gap:16px;margin-top:6px;">
                                 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;">
-                                    <input type="checkbox" name="flag_a" value="1" <?= (intval($gag['flags']) & 1) ? 'checked' : '' ?>>
+                                    <input type="checkbox" name="flag_a" value="1" checked>
                                     a — Текстовый чат
                                 </label>
                                 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;">
-                                    <input type="checkbox" name="flag_b" value="2" <?= (intval($gag['flags']) & 2) ? 'checked' : '' ?>>
+                                    <input type="checkbox" name="flag_b" value="2" checked>
                                     b — Командный чат
                                 </label>
                                 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;">
-                                    <input type="checkbox" name="flag_c" value="4" <?= (intval($gag['flags']) & 4) ? 'checked' : '' ?>>
+                                    <input type="checkbox" name="flag_c" value="4" checked>
                                     c — Голосовой чат
                                 </label>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Причина *</label>
-                        <textarea name="reason" required><?= htmlspecialchars(fix_encoding($gag['reason'])) ?></textarea>
+                        <textarea name="reason" required><?= htmlspecialchars($_POST['reason'] ?? '') ?></textarea>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label>Ник админа</label>
-                            <input type="text" name="admin_name" value="<?= htmlspecialchars(fix_encoding($gag['admin_name'])) ?>">
+                            <input type="text" name="admin_name" value="<?= htmlspecialchars($_POST['admin_name'] ?? '') ?>">
                         </div>
                         <div class="form-group">
                             <label>Steam ID админа</label>
-                            <input type="text" name="admin_authid" value="<?= htmlspecialchars($gag['admin_authid']) ?>">
+                            <input type="text" name="admin_authid" value="<?= htmlspecialchars($_POST['admin_authid'] ?? '') ?>">
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Дата окончания (оставьте пустым для бессрочного)</label>
-                        <input type="datetime-local" name="expire_at" 
-                               value="<?= $gag['expire_at'] !== '2286-11-20 17:46:39' ? date('Y-m-d\TH:i', strtotime($gag['expire_at'])) : '' ?>">
+                        <input type="datetime-local" name="expire_at" value="">
                     </div>
-                    
+
                     <div class="form-actions">
                         <a href="index.php" class="btn-cancel">Отмена</a>
-                        <button type="submit" class="btn-save">Сохранить</button>
+                        <button type="submit" class="btn-save">Создать</button>
                     </div>
                 </form>
             </div>
