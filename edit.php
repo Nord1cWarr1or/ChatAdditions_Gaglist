@@ -47,23 +47,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $expire_at = '2286-11-20 17:46:39';
         }
 
-        $name_db = double_encode($name);
-        $reason_db = double_encode($reason);
-        $admin_name_db = double_encode($admin_name);
-        
-        $stmt = $conn->prepare("UPDATE " . GAGS_TABLE . " SET 
-            name = ?, authid = ?, ip = ?, reason = ?, 
-            admin_name = ?, admin_authid = ?, expire_at = ?, flags = ? 
+        $stmt = $conn->prepare("UPDATE " . GAGS_TABLE . " SET
+            name = ?, authid = ?, ip = ?, reason = ?,
+            admin_name = ?, admin_authid = ?, expire_at = ?, flags = ?
             WHERE id = ?");
-        $stmt->bind_param('sssssssii', $name_db, $authid, $ip, $reason_db, $admin_name_db, $admin_authid, $expire_at, $flags, $id);
+        $stmt->bind_param('sssssssii', $name, $authid, $ip, $reason, $admin_name, $admin_authid, $expire_at, $flags, $id);
 
         if ($stmt->execute()) {
             $success = 'Gag успешно обновлён';
-            $gag['name'] = $name_db;
+            $gag['name'] = $name;
             $gag['authid'] = $authid;
             $gag['ip'] = $ip;
-            $gag['reason'] = $reason_db;
-            $gag['admin_name'] = $admin_name_db;
+            $gag['reason'] = $reason;
+            $gag['admin_name'] = $admin_name;
             $gag['admin_authid'] = $admin_authid;
             $gag['expire_at'] = $expire_at;
             $gag['flags'] = $flags;

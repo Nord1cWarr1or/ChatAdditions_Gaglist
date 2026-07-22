@@ -30,11 +30,23 @@ function is_auth() {
 }
 
 function fix_encoding($str) {
-    if (!mb_check_encoding($str, 'UTF-8')) {
+    if ($str === '' || $str === null) return $str;
+
+    $decoded = @mb_convert_encoding($str, 'Windows-1252', 'UTF-8');
+    if ($decoded === false) {
         return $str;
     }
-    $fixed = mb_convert_encoding($str, 'Windows-1252', 'UTF-8');
-    return $fixed !== false ? $fixed : $str;
+
+    // If decoded result has more replacement characters than original,
+    // the string was NOT double-encoded — it was already correct UTF-8.
+    $orig_questions = mb_substr_count($str, "\xEF\xBF\xBD") + substr_count($str, '?');
+    $decoded_questions = mb_substr_count($decoded, "\xEF\xBF\xBD") + substr_count($decoded, '?');
+
+    if ($decoded_questions > $orig_questions) {
+        return $str;
+    }
+
+    return $decoded;
 }
 
 function require_auth() {

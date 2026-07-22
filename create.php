@@ -30,19 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $expire_at = '2286-11-20 17:46:39';
         }
 
-        $name_db = double_encode($name);
-        $reason_db = double_encode($reason);
-        $admin_name_db = double_encode($admin_name);
-
-        $stmt = $conn->prepare("INSERT INTO " . GAGS_TABLE . " 
+        $stmt = $conn->prepare("INSERT INTO " . GAGS_TABLE . "
             (name, authid, ip, reason, admin_name, admin_authid, admin_ip, expire_at, flags, created_at)
             VALUES (?, ?, ?, ?, ?, ?, '0.0.0.0', ?, ?, NOW())
-            ON DUPLICATE KEY UPDATE 
+            ON DUPLICATE KEY UPDATE
             name = VALUES(name), ip = VALUES(ip), reason = VALUES(reason),
             admin_name = VALUES(admin_name), admin_authid = VALUES(admin_authid),
             admin_ip = VALUES(admin_ip), expire_at = VALUES(expire_at),
             flags = VALUES(flags), created_at = NOW()");
-        $stmt->bind_param('sssssssi', $name_db, $authid, $ip, $reason_db, $admin_name_db, $admin_authid, $expire_at, $flags);
+        $stmt->bind_param('sssssssi', $name, $authid, $ip, $reason, $admin_name, $admin_authid, $expire_at, $flags);
 
         if ($stmt->execute()) {
             header('Location: index.php');
