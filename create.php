@@ -44,12 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flags = VALUES(flags), created_at = NOW()");
         $stmt->bind_param('sssssssi', $name_db, $authid, $ip, $reason_db, $admin_name_db, $admin_authid, $expire_at, $flags);
 
-        try {
-            $stmt->execute();
+        if ($stmt->execute()) {
             header('Location: index.php');
             exit;
-        } catch (mysqli_sql_exception $e) {
-            $error = 'Ошибка при создании: ' . $e->getMessage();
+        } else {
+            $error = 'Ошибка при создании: ' . $conn->error;
         }
         $stmt->close();
     }

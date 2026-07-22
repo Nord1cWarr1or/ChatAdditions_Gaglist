@@ -57,8 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             WHERE id = ?");
         $stmt->bind_param('sssssssii', $name_db, $authid, $ip, $reason_db, $admin_name_db, $admin_authid, $expire_at, $flags, $id);
 
-        try {
-            $stmt->execute();
+        if ($stmt->execute()) {
             $success = 'Gag успешно обновлён';
             $gag['name'] = $name_db;
             $gag['authid'] = $authid;
@@ -68,12 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $gag['admin_authid'] = $admin_authid;
             $gag['expire_at'] = $expire_at;
             $gag['flags'] = $flags;
-        } catch (mysqli_sql_exception $e) {
-            if ($e->getCode() === 1062) {
-                $error = 'Gag с таким Steam ID уже существует';
-            } else {
-                $error = 'Ошибка при обновлении: ' . $e->getMessage();
-            }
+        } else {
+            $error = 'Ошибка при обновлении: ' . $conn->error;
         }
         $stmt->close();
     }
