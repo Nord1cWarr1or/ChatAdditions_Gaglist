@@ -12,6 +12,7 @@ Web panel for viewing and managing **gag** (chat mute) punishments from the [Cha
 - Filtering: all / active only
 - Search by nickname, Steam ID, or IP (including Cyrillic)
 - Edit and delete punishments (authentication required)
+- Create new gag punishments from the web panel (authentication required)
 - Gag flag management (text chat, team chat, voice chat) via checkboxes
 - Dark and light theme with auto-save
 - Responsive design for mobile devices
@@ -116,6 +117,7 @@ Navigate to `http://your-domain/gaglist/`
 ├── index.php      # Main page — gag list (no auth required)
 ├── login.php      # Login page
 ├── logout.php     # Logout
+├── create.php     # Create new gag (auth required)
 ├── edit.php       # Edit gag (auth required)
 ├── delete.php     # Delete gag (auth required, POST)
 ├── config.php     # DB settings, auth, helper functions
