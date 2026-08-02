@@ -74,9 +74,15 @@ $now = date('Y-m-d H:i:s');
 <body>
     <div class="container">
         <header>
-            <h1><a href="index.php" style="text-decoration:none;color:inherit;">🔇 Gag <span>List</span></a></h1>
+            <h1><a href="index.php" style="text-decoration:none;color:inherit;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px;"><path d="M3 11l18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+                Gag <span>List</span>
+            </a></h1>
             <div class="nav-links">
-                <button class="theme-toggle" onclick="toggleTheme()" title="Переключить тему">☀️</button>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Переключить тему">
+                    <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
                 <?php if (is_auth()): ?>
                     <a href="create.php" class="btn-add">+ Добавить gag</a>
                     <a href="logout.php" class="btn-logout">Выйти</a>
@@ -105,7 +111,10 @@ $now = date('Y-m-d H:i:s');
                 <?php if ($active_only): ?>
                     <input type="hidden" name="active" value="1">
                 <?php endif; ?>
-                <button type="submit" class="filter-btn">🔍 Найти</button>
+                <button type="submit" class="filter-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Найти
+                </button>
                 <?php if ($search !== ''): ?>
                     <a href="<?= $build_url(['q' => '']) ?>" class="filter-btn">✕</a>
                 <?php endif; ?>
@@ -187,11 +196,15 @@ $now = date('Y-m-d H:i:s');
                             <?php if (is_auth()): ?>
                             <td>
                                 <div class="actions">
-                                    <a href="edit.php?id=<?= $gag['id'] ?>" class="btn btn-edit">✏️</a>
+                                    <a href="edit.php?id=<?= $gag['id'] ?>" class="btn btn-edit">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    </a>
                                     <form method="post" action="delete.php" style="display:inline;" onsubmit="return confirm('Удалить этот gag?')">
                                         <input type="hidden" name="id" value="<?= $gag['id'] ?>">
                                         <?= csrf_field() ?>
-                                        <button type="submit" class="btn btn-delete">🗑️</button>
+                                        <button type="submit" class="btn btn-delete">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                                        </button>
                                     </form>
                                 </div>
                             </td>
@@ -244,7 +257,18 @@ $now = date('Y-m-d H:i:s');
     }
     function applyTheme(theme) {
         document.body.classList.toggle('dark', theme === 'dark');
-        document.querySelector('.theme-toggle').textContent = theme === 'dark' ? '🌙' : '☀️';
+        const btn = document.querySelector('.theme-toggle');
+        if (btn) {
+            const sun = btn.querySelector('.icon-sun');
+            const moon = btn.querySelector('.icon-moon');
+            if (theme === 'dark') {
+                if (sun) sun.style.display = 'none';
+                if (moon) moon.style.display = 'block';
+            } else {
+                if (sun) sun.style.display = 'block';
+                if (moon) moon.style.display = 'none';
+            }
+        }
     }
     function toggleTheme() {
         const next = getTheme() === 'dark' ? 'light' : 'dark';
