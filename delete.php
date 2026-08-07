@@ -13,5 +13,5 @@ if ($id > 0) {
     $stmt->close();
 }
 
-header('Location: index.php');
+header('Location: index.php' . lang_url());
 exit;

@@ -6,7 +6,7 @@ $conn = db_connect();
 $id = intval($_GET['id'] ?? 0);
 
 if ($id <= 0) {
-    header('Location: index.php');
+    header('Location: index.php' . lang_url());
     exit;
 }
 
@@ -17,7 +17,7 @@ $gag = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
 if (!$gag) {
-    header('Location: index.php');
+    header('Location: index.php' . lang_url());
     exit;
 }
 
@@ -37,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['flag_a'])) $flags |= 1;
     if (!empty($_POST['flag_b'])) $flags |= 2;
     if (!empty($_POST['flag_c'])) $flags |= 4;
-    
+
     if ($name === '' || $authid === '' || $reason === '') {
-        $error = 'Заполните обязательные поля';
+        $error = str('edit_error_empty');
     } elseif ($expire_at !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2})?$/', $expire_at)) {
-        $error = 'Неверный формат даты';
+        $error = str('edit_error_date');
     } else {
         if ($expire_at === '') {
             $expire_at = '2286-11-20 17:46:39';
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param('sssssssii', $name, $authid, $ip, $reason, $admin_name, $admin_authid, $expire_at, $flags, $id);
 
         if ($stmt->execute()) {
-            $success = 'Gag успешно обновлён';
+            $success = str('edit_success');
             $gag['name'] = $name;
             $gag['authid'] = $authid;
             $gag['ip'] = $ip;
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $gag['expire_at'] = $expire_at;
             $gag['flags'] = $flags;
         } else {
-            $error = 'Ошибка при обновлении: ' . $conn->error;
+            $error = sprintf(str('edit_error_db'), $conn->error);
         }
         $stmt->close();
     }
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редактирование — Gag List</title>
+    <title><?= str('edit_title') ?></title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -83,92 +83,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <header>
             <h1><a href="index.php" style="text-decoration:none;color:inherit;">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px;"><path d="M3 11l18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
-                Gag <span>List</span>
+                <?= str('nav_title') ?>
             </a></h1>
             <div class="nav-links">
-                <button class="theme-toggle" onclick="toggleTheme()" title="Переключить тему">
+                <button class="theme-toggle" onclick="toggleTheme()" title="<?= str('nav_theme_toggle') ?>">
                     <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                     <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 </button>
-                <a href="index.php">← Назад</a>
-                <a href="logout.php" class="btn-logout">Выйти</a>
+                <a href="<?= '?' . http_build_query(array_merge(array_filter($_GET, fn($k) => $k !== 'lang', ARRAY_FILTER_USE_KEY), ['lang' => current_lang() === 'ru' ? 'en' : 'ru'])) ?>" class="btn-lang" title="<?= str('nav_language') ?>"><?= str('nav_language') ?></a>
+                <a href="index.php<?= lang_url() ?>"><?= str('nav_back') ?></a>
+                <a href="logout.php<?= lang_url() ?>" class="btn-logout"><?= str('nav_logout') ?></a>
             </div>
         </header>
 
         <div class="edit-wrapper">
             <div class="edit-box">
-                <h2>Редактирование gag #<?= $id ?></h2>
-                
+                <h2><?= sprintf(str('edit_heading'), $id) ?></h2>
+
                 <?php if ($success): ?>
                     <div class="error-msg" style="background:#d4edda;color:#155724;"><?= htmlspecialchars($success) ?></div>
                 <?php endif; ?>
-                
+
                 <?php if ($error): ?>
                     <div class="error-msg"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
-                
+
                 <form method="post">
                     <?= csrf_field() ?>
+                    <input type="hidden" name="lang" value="<?= current_lang() ?>">
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Никнейм игрока *</label>
+                            <label><?= str('edit_field_name') ?></label>
                             <input type="text" name="name" value="<?= htmlspecialchars(fix_encoding($gag['name'])) ?>" required>
                         </div>
                         <div class="form-group">
-                            <label>Steam ID *</label>
+                            <label><?= str('edit_field_authid') ?></label>
                             <input type="text" name="authid" value="<?= htmlspecialchars($gag['authid']) ?>" required>
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
-                            <label>IP игрока</label>
+                            <label><?= str('edit_field_ip') ?></label>
                             <input type="text" name="ip" value="<?= htmlspecialchars($gag['ip']) ?>">
                         </div>
                         <div class="form-group">
-                            <label>Флаги</label>
+                            <label><?= str('edit_field_flags') ?></label>
                             <div style="display:flex;gap:16px;margin-top:6px;">
                                 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;">
                                     <input type="checkbox" name="flag_a" value="1" <?= (intval($gag['flags']) & 1) ? 'checked' : '' ?>>
-                                    a — Текстовый чат
+                                    <?= str('edit_flag_a') ?>
                                 </label>
                                 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;">
                                     <input type="checkbox" name="flag_b" value="2" <?= (intval($gag['flags']) & 2) ? 'checked' : '' ?>>
-                                    b — Командный чат
+                                    <?= str('edit_flag_b') ?>
                                 </label>
                                 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;">
                                     <input type="checkbox" name="flag_c" value="4" <?= (intval($gag['flags']) & 4) ? 'checked' : '' ?>>
-                                    c — Голосовой чат
+                                    <?= str('edit_flag_c') ?>
                                 </label>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
-                        <label>Причина *</label>
+                        <label><?= str('edit_field_reason') ?></label>
                         <textarea name="reason" required><?= htmlspecialchars(fix_encoding($gag['reason'])) ?></textarea>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Ник админа</label>
+                            <label><?= str('edit_field_admin_name') ?></label>
                             <input type="text" name="admin_name" value="<?= htmlspecialchars(fix_encoding($gag['admin_name'])) ?>">
                         </div>
                         <div class="form-group">
-                            <label>Steam ID админа</label>
+                            <label><?= str('edit_field_admin_authid') ?></label>
                             <input type="text" name="admin_authid" value="<?= htmlspecialchars($gag['admin_authid']) ?>">
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
-                        <label>Дата окончания (оставьте пустым для бессрочного)</label>
-                        <input type="datetime-local" name="expire_at" 
+                        <label><?= str('edit_field_expire') ?></label>
+                        <input type="datetime-local" name="expire_at"
                                value="<?= $gag['expire_at'] !== '2286-11-20 17:46:39' ? date('Y-m-d\TH:i', strtotime($gag['expire_at'])) : '' ?>">
                     </div>
-                    
+
                     <div class="form-actions">
-                        <a href="index.php" class="btn-cancel">Отмена</a>
-                        <button type="submit" class="btn-save">Сохранить</button>
+                        <a href="index.php<?= lang_url() ?>" class="btn-cancel"><?= str('edit_cancel') ?></a>
+                        <button type="submit" class="btn-save"><?= str('edit_submit') ?></button>
                     </div>
                 </form>
             </div>

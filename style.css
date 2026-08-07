@@ -200,6 +200,19 @@ header h1 span {
     color: #fff;
 }
 
+.nav-links .btn-lang {
+    background: var(--badge-total-bg);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 6px 10px;
+}
+
+.nav-links .btn-lang:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
 .theme-toggle {
     background: var(--badge-total-bg);
     color: var(--text);

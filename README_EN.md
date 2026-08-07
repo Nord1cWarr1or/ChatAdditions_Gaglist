@@ -17,6 +17,7 @@ Web panel for viewing and managing **gag** (chat mute) punishments from the [Cha
 - Dark and light theme with auto-save
 - Responsive design for mobile devices
 - CSRF protection on forms
+- Language switching: Russian / English (auto-detected from browser)
 
 ## Screenshots
 
@@ -121,7 +122,8 @@ Navigate to `http://your-domain/gaglist/`
 ├── edit.php       # Edit gag (auth required)
 ├── delete.php     # Delete gag (auth required, POST)
 ├── config.php     # DB settings, auth, helper functions
-└── style.css      # Styles (light and dark theme)
+├── lang.php       # Localization (RU/EN)
+├── style.css      # Styles (light and dark theme)
 ```
 
 ## Database Structure
