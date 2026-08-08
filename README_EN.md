@@ -15,6 +15,7 @@ Web panel for viewing and managing **gag** (chat mute) punishments from the [Cha
 - Create new gag punishments from the web panel (authentication required)
 - Gag flag management (text chat, team chat, voice chat) via checkboxes
 - Dark and light theme with auto-save
+- 10 color themes to choose from (Default, Forest, Sunset, Royal, Rose, Ocean, Crimson, Lavender, Amber, Mint)
 - Responsive design for mobile devices
 - CSRF protection on forms
 - Multi-language localization (auto-detected from browser, dropdown in header)
@@ -125,7 +126,20 @@ Navigate to `http://your-domain/gaglist/`
 ├── config.php     # DB settings, auth, helper functions
 ├── lang.php       # Loads localization from JSON, language detection
 ├── lang.json      # Translations (meta + keys for all languages)
-├── style.css      # Styles (light and dark theme)
+├── theme.php      # Theme management (selection, switching, CSS loading)
+├── footer.php     # Shared footer with theme switcher and dark/light toggle
+├── style.css      # Styles (structure, components)
+├── themes/        # Color themes
+│   ├── default.css   # Default theme (cyan)
+│   ├── forest.css    # Green
+│   ├── sunset.css    # Amber
+│   ├── royal.css     # Indigo
+│   ├── rose.css      # Pink
+│   ├── ocean.css     # Blue
+│   ├── crimson.css   # Red
+│   ├── lavender.css  # Purple
+│   ├── amber.css     # Gold
+│   └── mint.css      # Teal
 ```
 
 ## Database Structure
@@ -182,6 +196,46 @@ All translations are stored in `lang.json`. To add a new language:
 4. Submit a Pull Request
 
 If a key is missing for the current language, the Russian translation is used as fallback.
+
+## Themes
+
+The panel supports 10 color themes, each with light/dark variants. Theme choice is saved in `localStorage`.
+
+### Available Themes
+
+| Theme | Accent | Description |
+|-------|--------|-------------|
+| Default | `#0891b2` | Cyan (default) |
+| Forest | `#15803d` | Green |
+| Sunset | `#d97706` | Amber |
+| Royal | `#6366f1` | Indigo |
+| Rose | `#ec4899` | Pink |
+| Ocean | `#2563eb` | Blue |
+| Crimson | `#e11d48` | Red |
+| Lavender | `#7c3aed` | Purple |
+| Amber | `#b45309` | Gold |
+| Mint | `#0891b2` | Teal |
+
+### Adding a New Theme
+
+1. Create a file `themes/yourtheme.css`
+2. Define CSS variables for `:root` (light) and `body.dark` (dark):
+   ```css
+   :root {
+       --accent: #your-accent;
+       --bg: #your-bg;
+       /* ... all variables ... */
+   }
+   body.dark {
+       --accent: #your-dark-accent;
+       --bg: #your-dark-bg;
+       /* ... */
+   }
+   ```
+3. Add the theme name to the `$names` array in the `theme_name()` function in `theme.php`
+4. Submit a Pull Request
+
+Use existing files in `themes/` as a reference for creating a new theme.
 
 ## Security
 

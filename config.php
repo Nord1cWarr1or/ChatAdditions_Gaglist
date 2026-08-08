@@ -1,8 +1,8 @@
 <?php
 define('DB_HOST', '127.0.0.1');
-define('DB_USER', 'root');
-define('DB_PASS', 'pass');
-define('DB_NAME', 'db_name');
+define('DB_USER', 'cs');
+define('DB_PASS', 'maksik999');
+define('DB_NAME', 'cs_plugins');
 
 define('ADMIN_LOGIN', 'admin');
 define('ADMIN_PASSWORD', 'changeme');
@@ -13,6 +13,8 @@ session_start();
 date_default_timezone_set('Europe/Moscow');
 
 require_once __DIR__ . '/lang.php';
+require_once __DIR__ . '/theme.php';
+init_theme();
 
 function db_connect() {
     static $conn = null;
