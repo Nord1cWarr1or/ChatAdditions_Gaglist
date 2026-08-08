@@ -764,10 +764,6 @@ tbody tr:last-child td {
         padding: 6px 10px;
     }
 
-    .btn-add::before {
-        content: "+ ";
-    }
-
     .toolbar {
         gap: 8px;
         flex-direction: column;
