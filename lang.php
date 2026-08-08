@@ -145,9 +145,7 @@ function lang_url($overrides = []) {
     $params = array_merge($params, $overrides);
     // If lang was explicitly passed in overrides, use it; otherwise preserve current
     if (isset($overrides['lang'])) {
-        if ($overrides['lang'] === 'ru') {
-            unset($params['lang']);
-        }
+        $params['lang'] = $overrides['lang'];
     } else {
         $lang = current_lang();
         if ($lang !== 'ru') {
