@@ -200,17 +200,66 @@ header h1 span {
     color: #fff;
 }
 
-.nav-links .btn-lang {
+.lang-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.lang-dropdown .btn-lang {
     background: var(--badge-total-bg);
     color: var(--text);
     font-weight: 600;
     font-size: 13px;
     padding: 6px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    transition: background 0.2s, color 0.2s;
 }
 
-.nav-links .btn-lang:hover {
+.lang-dropdown .btn-lang:hover {
     background: var(--accent);
     color: #fff;
+}
+
+.lang-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 4px;
+    z-index: 100;
+    min-width: 160px;
+    background: var(--bg-card);
+    border-radius: 6px;
+    box-shadow: 0 4px 20px var(--shadow-header);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.lang-dropdown-menu.open {
+    display: block;
+}
+
+.lang-dropdown-menu a {
+    display: block;
+    padding: 8px 14px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 14px;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+
+.lang-dropdown-menu a:hover {
+    background: var(--badge-total-bg);
+}
+
+.lang-dropdown-menu a.active {
+    font-weight: 600;
+    color: var(--accent);
 }
 
 .theme-toggle {

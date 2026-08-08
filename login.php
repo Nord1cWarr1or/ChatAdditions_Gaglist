@@ -55,7 +55,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                     <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 </button>
-                <a href="<?= '?' . http_build_query(array_merge(array_filter($_GET, fn($k) => $k !== 'lang', ARRAY_FILTER_USE_KEY), ['lang' => current_lang() === 'ru' ? 'en' : 'ru'])) ?>" class="btn-lang" title="<?= str('nav_language') ?>"><?= str('nav_language') ?></a>
+                <div class="lang-dropdown">
+                    <button class="btn-lang" onclick="toggleLangDropdown()"><?= current_lang_flag() ?> <?= current_lang_name() ?> ▾</button>
+                    <div class="lang-dropdown-menu" id="langMenu">
+                        <?php foreach (get_languages() as $code => $meta): ?>
+                            <a href="<?= lang_url(['lang' => $code]) ?>" class="<?= $code === current_lang() ? 'active' : '' ?>"><?= $meta['flag'] ?> <?= $meta['name'] ?></a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
                 <a href="index.php<?= lang_url() ?>"><?= str('nav_back') ?></a>
             </div>
         </header>
@@ -107,6 +114,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         applyTheme(next);
     }
     applyTheme(getTheme());
+    function toggleLangDropdown() {
+        document.getElementById('langMenu').classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+        var dd = document.querySelector('.lang-dropdown');
+        if (dd && !dd.contains(e.target)) {
+            document.getElementById('langMenu').classList.remove('open');
+        }
+    });
     </script>
 </body>
 </html>

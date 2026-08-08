@@ -17,7 +17,8 @@ Web panel for viewing and managing **gag** (chat mute) punishments from the [Cha
 - Dark and light theme with auto-save
 - Responsive design for mobile devices
 - CSRF protection on forms
-- Language switching: Russian / English (auto-detected from browser)
+- Multi-language localization (auto-detected from browser, dropdown in header)
+- Easy to add a new language via Pull Request
 
 ## Screenshots
 
@@ -122,7 +123,8 @@ Navigate to `http://your-domain/gaglist/`
 ├── edit.php       # Edit gag (auth required)
 ├── delete.php     # Delete gag (auth required, POST)
 ├── config.php     # DB settings, auth, helper functions
-├── lang.php       # Localization (RU/EN)
+├── lang.php       # Loads localization from JSON, language detection
+├── lang.json      # Translations (meta + keys for all languages)
 ├── style.css      # Styles (light and dark theme)
 ```
 
@@ -159,6 +161,27 @@ Example: `flags = 5` → text chat (1) and voice chat (4) are disabled.
 - **Backend**: PHP 7.4+ (vanilla PHP, no frameworks)
 - **Database**: MySQL/MariaDB (prepared statements)
 - **Frontend**: HTML + CSS + Vanilla JavaScript
+
+## Localization
+
+All translations are stored in `lang.json`. To add a new language:
+
+1. Open `lang.json`
+2. Add an entry in the `meta` block:
+   ```json
+   "de": { "name": "Deutsch", "flag": "🇩🇪" }
+   ```
+3. Add a translation block with the same keys:
+   ```json
+   "de": {
+     "nav_title": "Gag <span>List</span>",
+     "nav_add": "Add gag",
+     ...
+   }
+   ```
+4. Submit a Pull Request
+
+If a key is missing for the current language, the Russian translation is used as fallback.
 
 ## Security
 
