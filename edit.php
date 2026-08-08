@@ -78,7 +78,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title><?= str('edit_title') ?></title>
     <link rel="stylesheet" href="style.css">
     <?php load_theme_css(); ?>
+    <?php load_dark_inline_style(); ?>
+    <script>
+    (function(){
+        var d=localStorage.getItem('darkMode');
+        var isDark=d==='true'||(d===null&&document.cookie.includes('darkMode=1'));
+        if(isDark){document.documentElement.classList.add('dark');document.body.classList.add('dark');}
+        if(!document.cookie.includes('darkMode=')){document.cookie='darkMode='+(isDark?'1':'0')+';path=/;max-age=31536000';}
+        var t=localStorage.getItem('theme')||'default';
+        var link=document.getElementById('theme-css');
+        var themes=<?= json_encode(array_map(function($t){return $t['file'];},get_themes())) ?>;
+        if(link&&themes[t])link.href=themes[t];
+        if(!document.cookie.includes('theme=')){document.cookie='theme='+t+';path=/;max-age=31536000';}
+    })();
+    </script>
 </head>
+<body class="<?= ($_COOKIE['darkMode'] ?? '') === '1' ? 'dark' : '' ?>">
 <body>
     <div class="container">
         <header>

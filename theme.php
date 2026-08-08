@@ -3,9 +3,8 @@
  * Theme management for ChatAdditions Gag List.
  *
  * get_themes() — scans themes/ directory, returns array of theme IDs
- * current_theme() — reads $_GET['theme'] > $_COOKIE['theme'] > default 'default'
- * theme_url($overrides) — builds URL preserving current theme + language
- * load_theme_css() — outputs <link> tag for current theme CSS
+ * load_theme_css() — outputs <link> tag for default theme CSS (JS swaps via localStorage)
+ * theme_name() — returns human-readable theme name
  */
 
 function get_themes() {
@@ -36,61 +35,22 @@ function get_themes() {
     return $themes;
 }
 
-function current_theme() {
-    if (isset($_GET['theme'])) {
-        return $_GET['theme'];
-    }
-    if (isset($_SESSION['theme'])) return $_SESSION['theme'];
-    if (isset($_COOKIE['theme'])) {
-        $_SESSION['theme'] = $_COOKIE['theme'];
-        return $_COOKIE['theme'];
-    }
-    return 'default';
-}
-
-function init_theme() {
-    if (isset($_GET['theme'])) {
-        $theme = $_GET['theme'];
-        $_SESSION['theme'] = $theme;
-        if (headers_sent()) {
-            // Can't set cookie, store in session only
-        } else {
-            setcookie('theme', $theme, time() + 86400 * 365, '/');
-        }
-    }
-}
-
-function theme_url($overrides = []) {
-    $params = $_GET;
-    unset($params['theme']);
-    $theme_explicit = false;
-    foreach ($overrides as $k => $v) {
-        if ($v === false) {
-            unset($params[$k]);
-            unset($overrides[$k]);
-            if ($k === 'theme') $theme_explicit = true;
-        }
-    }
-    $params = array_merge($params, $overrides);
-    if (isset($overrides['theme'])) {
-        $params['theme'] = $overrides['theme'];
-    } elseif (!$theme_explicit) {
-        $theme = current_theme();
-        if ($theme !== 'default') $params['theme'] = $theme;
-    }
-    // Preserve lang
-    if (function_exists('current_lang')) {
-        $lang = current_lang();
-        if ($lang !== 'ru') $params['lang'] = $lang;
-    }
-    return $params ? '?' . http_build_query($params) : '';
-}
-
 function load_theme_css() {
     $themes = get_themes();
-    $current = current_theme();
-    if (isset($themes[$current])) {
-        echo '<link rel="stylesheet" href="' . htmlspecialchars($themes[$current]['file']) . '">';
+    $theme = $_COOKIE['theme'] ?? 'default';
+    if (!isset($themes[$theme])) $theme = 'default';
+    echo '<link rel="stylesheet" href="' . htmlspecialchars($themes[$theme]['file']) . '" id="theme-css">';
+}
+
+function load_dark_inline_style() {
+    $themes = get_themes();
+    $theme = $_COOKIE['theme'] ?? 'default';
+    if (!isset($themes[$theme])) $theme = 'default';
+    $file = __DIR__ . '/' . $themes[$theme]['file'];
+    if (!file_exists($file)) return;
+    $css = file_get_contents($file);
+    if (preg_match('/html\.dark[^{]*\{([^}]+)\}/s', $css, $m)) {
+        echo '<style data-dark-inline>html.dark,html.dark body{' . $m[1] . '}</style>';
     }
 }
 

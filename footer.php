@@ -1,18 +1,22 @@
 <?php
 $themes = get_themes();
-$current_theme = current_theme();
+$theme_names = [];
+foreach ($themes as $id => $meta) {
+    $theme_names[$id] = theme_name($id);
+}
 ?>
 <footer class="site-footer">
     <div class="footer-controls">
         <div class="theme-dropdown">
             <button class="btn-theme" onclick="toggleThemeDropdown()" id="themeBtn">
-                🎨 <?= theme_name($current_theme) ?> ▾
+                🎨 <span id="themeBtnText">Default</span> ▾
             </button>
             <div class="theme-menu" id="themeMenu">
                 <?php foreach ($themes as $id => $meta): ?>
-                    <a href="<?= theme_url(['theme' => $id]) ?>"
-                       class="theme-option <?= $id === $current_theme ? 'active' : '' ?>"
-                       data-theme="<?= $id ?>">
+                    <a href="#"
+                       class="theme-option"
+                       data-theme="<?= $id ?>"
+                       onclick="switchTheme('<?= $id ?>'); return false;">
                         <?= theme_name($id) ?>
                     </a>
                 <?php endforeach; ?>
@@ -25,9 +29,28 @@ $current_theme = current_theme();
     </div>
 </footer>
 <script>
+var THEME_CSS = <?= json_encode(array_map(function($t) { return $t['file']; }, $themes)) ?>;
+var THEME_NAMES = <?= json_encode($theme_names) ?>;
+
+function getTheme() { return localStorage.getItem('theme') || 'default'; }
 function getDarkMode() { return localStorage.getItem('darkMode') === 'true'; }
+
+function applyTheme(themeId) {
+    var link = document.getElementById('theme-css');
+    if (link && THEME_CSS[themeId]) {
+        link.href = THEME_CSS[themeId];
+    }
+    document.querySelectorAll('.theme-option').forEach(function(el) {
+        el.classList.toggle('active', el.getAttribute('data-theme') === themeId);
+    });
+    var btnText = document.getElementById('themeBtnText');
+    if (btnText) btnText.textContent = THEME_NAMES[themeId] || themeId;
+}
+
 function applyDarkMode(dark) {
+    document.documentElement.classList.toggle('dark', dark);
     document.body.classList.toggle('dark', dark);
+    document.cookie = 'darkMode=' + (dark ? '1' : '0') + ';path=/;max-age=31536000';
     var btn = document.querySelector('.theme-toggle');
     if (btn) {
         var sun = btn.querySelector('.icon-sun');
@@ -36,17 +59,31 @@ function applyDarkMode(dark) {
         if (moon) moon.style.display = dark ? 'block' : 'none';
     }
 }
+
+function switchTheme(themeId) {
+    localStorage.setItem('theme', themeId);
+    document.cookie = 'theme=' + themeId + ';path=/;max-age=31536000';
+    applyTheme(themeId);
+    // Remove inline dark style so external CSS takes over
+    var inlineStyle = document.querySelector('style[data-dark-inline]');
+    if (inlineStyle) inlineStyle.remove();
+    document.getElementById('themeMenu').classList.remove('open');
+}
+
 function toggleDarkMode() {
     var next = !getDarkMode();
     localStorage.setItem('darkMode', next);
     applyDarkMode(next);
 }
+
 function toggleThemeDropdown() {
     document.getElementById('themeMenu').classList.toggle('open');
 }
+
 function toggleLangDropdown() {
     document.getElementById('langMenu').classList.toggle('open');
 }
+
 document.addEventListener('click', function(e) {
     var themeDd = document.querySelector('.theme-dropdown');
     if (themeDd && !themeDd.contains(e.target)) {
@@ -57,5 +94,8 @@ document.addEventListener('click', function(e) {
         document.getElementById('langMenu').classList.remove('open');
     }
 });
+
+// Apply saved theme immediately
+applyTheme(getTheme());
 applyDarkMode(getDarkMode());
 </script>

@@ -52,7 +52,7 @@
     --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
 }
 
-body.dark {
+html.dark, body.dark {
     --bg: #0a1f1e;
     --bg-card: #132e2c;
     --bg-card-hover: #1a3d3a;

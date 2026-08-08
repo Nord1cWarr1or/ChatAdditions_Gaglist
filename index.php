@@ -121,8 +121,22 @@ function format_duration($created, $expire) {
     <title><?= str('index_title') ?></title>
     <link rel="stylesheet" href="style.css">
     <?php load_theme_css(); ?>
+    <?php load_dark_inline_style(); ?>
+    <script>
+    (function(){
+        var d=localStorage.getItem('darkMode');
+        var isDark=d==='true'||(d===null&&document.cookie.includes('darkMode=1'));
+        if(isDark){document.documentElement.classList.add('dark');document.body.classList.add('dark');}
+        if(!document.cookie.includes('darkMode=')){document.cookie='darkMode='+(isDark?'1':'0')+';path=/;max-age=31536000';}
+        var t=localStorage.getItem('theme')||'default';
+        var link=document.getElementById('theme-css');
+        var themes=<?= json_encode(array_map(function($t){return $t['file'];},get_themes())) ?>;
+        if(link&&themes[t])link.href=themes[t];
+        if(!document.cookie.includes('theme=')){document.cookie='theme='+t+';path=/;max-age=31536000';}
+    })();
+    </script>
 </head>
-<body>
+<body class="<?= ($_COOKIE['darkMode'] ?? '') === '1' ? 'dark' : '' ?>">
     <div class="container">
         <header>
             <h1><a href="index.php" style="text-decoration:none;color:inherit;">
@@ -272,7 +286,7 @@ function format_duration($created, $expire) {
         <?php if ($total_pages > 1): ?>
         <div class="pagination">
             <?php if ($page > 1): ?>
-                <a href="?page=<?= $page - 1 ?><?= $search ? '&q=' . urlencode($search) : '' ?><?= $active_only ? '&active=1' : '' ?><?= current_lang() !== 'ru' ? '&lang=' . current_lang() : '' ?>">← <?= str('nav_back') ?></a>
+                <a href="?page=<?= $page - 1 ?><?= $search ? '&q=' . urlencode($search) : '' ?><?= $active_only ? '&active=1' : '' ?><?= current_lang() !== 'ru' ? '&lang=' . current_lang() : '' ?>"><?= str('nav_back') ?></a>
             <?php endif; ?>
 
             <?php
