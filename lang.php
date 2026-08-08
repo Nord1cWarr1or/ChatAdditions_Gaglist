@@ -96,7 +96,8 @@ $CURRENT_LANG = detect_language();
  */
 function str($key, ...$args) {
     $data = load_translations();
-    $value = $data[$CURRENT_LANG][$key] ?? $data['ru'][$key] ?? $key;
+    $lang = current_lang();
+    $value = $data[$lang][$key] ?? $data['ru'][$key] ?? $key;
     if ($args) {
         $value = vsprintf($value, $args);
     }
