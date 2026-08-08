@@ -741,6 +741,7 @@ tbody tr:last-child td {
         flex-direction: row;
         gap: 8px;
         padding: 10px 14px;
+        flex-wrap: wrap;
     }
 
     header h1 {
@@ -749,6 +750,8 @@ tbody tr:last-child td {
 
     .nav-links {
         gap: 6px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
     }
 
     .nav-links a, .nav-links button {
@@ -756,12 +759,24 @@ tbody tr:last-child td {
         font-size: 13px;
     }
 
+    .btn-add {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .btn-add::before {
+        content: "+ ";
+    }
+
     .toolbar {
         gap: 8px;
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .search-form {
         min-width: 0 !important;
+        flex-wrap: wrap;
     }
 
     .search-box {
@@ -792,17 +807,25 @@ tbody tr:last-child td {
     }
 
     .col-ip,
-    .col-steamid {
+    .col-steamid,
+    .col-admin,
+    .col-reason {
         display: none;
     }
 
     table {
-        min-width: 480px;
+        min-width: 0;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     thead th,
     tbody td {
         padding: 10px 8px;
+        font-size: 13px;
     }
 
     thead th:last-child {
@@ -814,7 +837,18 @@ tbody tr:last-child td {
     }
 
     .player-name {
-        max-width: 120px;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .date-cell {
+        min-width: 100px;
+    }
+
+    .date-range {
+        display: none;
     }
 
     .form-row {
