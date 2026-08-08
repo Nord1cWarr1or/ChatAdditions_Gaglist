@@ -11,7 +11,7 @@ $translations = [
         // Navigation
         'nav_title'             => 'Gag <span>List</span>',
         'nav_theme_toggle'      => 'Переключить тему',
-        'nav_add'               => '+ Добавить gag',
+        'nav_add'               => 'Добавить gag',
         'nav_logout'            => 'Выйти',
         'nav_login'             => 'Войти',
         'nav_back'              => '← Назад',
@@ -121,7 +121,7 @@ $translations = [
         // Navigation
         'nav_title'             => 'Gag <span>List</span>',
         'nav_theme_toggle'      => 'Toggle theme',
-        'nav_add'               => '+ Add gag',
+        'nav_add'               => 'Add gag',
         'nav_logout'            => 'Logout',
         'nav_login'             => 'Login',
         'nav_back'              => '← Back',
